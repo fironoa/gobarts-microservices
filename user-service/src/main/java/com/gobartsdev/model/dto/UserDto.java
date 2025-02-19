@@ -1,11 +1,8 @@
 package com.gobartsdev.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gobartsdev.model.entity.RoleEntity;
 import com.gobartsdev.model.entity.UserEntity;
-import jakarta.persistence.Column;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

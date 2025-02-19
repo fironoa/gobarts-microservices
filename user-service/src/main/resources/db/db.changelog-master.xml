@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.30.xsd">
 
-    <!-- Include changelogs for table creation -->
     <include file="classpath:db/v1.0/create-user-role-schema.xml"/>
     <include file="classpath:db/v1.0/insert-roles.xml"/>
     <include file="classpath:db/v1.0/alter-user-table.xml"/>

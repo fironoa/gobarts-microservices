@@ -1,6 +1,5 @@
 package com.gobartsdev.constants;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public interface ApiDictionary {

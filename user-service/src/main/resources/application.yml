@@ -5,10 +5,10 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://103.191.208.62:3306/errbowoc_gobarts_user_db
+    url: jdbc:mysql://localhost:3306/user_db
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: errbowoc_firo
-    password: "#Goboli180"
+    username: username
+    password: password
     jpa:
       hibernate:
         ddl-auto: none

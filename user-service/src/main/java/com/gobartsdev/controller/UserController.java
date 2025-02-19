@@ -1,6 +1,6 @@
 package com.gobartsdev.controller;
 
-import com.gobartsdev.constants.ApiDictionary;
+
 import com.gobartsdev.model.dto.UserDto;
 import com.gobartsdev.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;

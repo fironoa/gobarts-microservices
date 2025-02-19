@@ -12,10 +12,9 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class GenericException {
-    // Handle all exceptions (generic handler)
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
-        ex.printStackTrace();
         return generateException(ex.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
