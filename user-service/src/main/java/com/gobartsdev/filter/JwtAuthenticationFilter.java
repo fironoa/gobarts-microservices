@@ -10,6 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +21,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -41,6 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws IOException, ServletException {
 
         logger.info(request.getRequestURI() + " is being accessed");
+        logger.info("Before auth : " + System.currentTimeMillis());
         if (ApiDictionary.getOpenApis().contains(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
@@ -60,19 +66,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try{
             // Checking if it is valid because it can't parse an invalid token.
             // and it will be caught in the catch block.
+            logger.info("Before validating token : " + System.currentTimeMillis());
             if(jwtUtil.isAValidToken(token)){
+                logger.info("After validating token : " + System.currentTimeMillis());
                 String username = jwtUtil.extractUsername(token);
+
+                Collection<GrantedAuthority> roles = jwtUtil.getRolesFromToken(token).stream()
+                        .map(Object::toString)
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
                 if(SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails user = userDetailsService.loadUserByUsername(username);
+                    //UserDetails user = userDetailsService.loadUserByUsername(username);
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            user.getUsername(),
+                            username,
                             null,
-                            user.getAuthorities()
+                            roles
                     );
 
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
+                logger.info("After auth is set : " + System.currentTimeMillis());
                 filterChain.doFilter(request, response);
             }
         } catch(Exception ex){

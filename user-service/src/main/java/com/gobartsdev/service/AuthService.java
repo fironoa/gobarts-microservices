@@ -10,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -43,8 +47,14 @@ public class AuthService {
             throw new UsernameNotFoundException("Authentication failed");
         }
 
-        String accessToken = jwtUtil.generateToken(request.getUsername());
-        String refreshToken = jwtUtil.generateRefreshToken(request.getUsername());
+        Set<String> roles = new HashSet<>();
+        for(GrantedAuthority ga : auth.getAuthorities()){
+            System.out.println(ga);
+            roles.add(ga.getAuthority());
+        }
+
+        String accessToken = jwtUtil.generateAccessToken(request.getUsername(), roles);
+        String refreshToken = jwtUtil.generateRefreshToken(request.getUsername(), roles);
 
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
@@ -56,8 +66,9 @@ public class AuthService {
 
         try{
             if(jwtUtil.isAValidToken(refreshToken)){
-                String accessToken = jwtUtil.generateToken(
-                        jwtUtil.extractUsername(refreshToken)
+                String accessToken = jwtUtil.generateRefreshToken(
+                        jwtUtil.extractUsername(refreshToken),
+                        jwtUtil.getRolesFromToken(refreshToken).stream().map(Object::toString).collect(Collectors.toSet())
                 );
                 return AuthenticationResponse.builder()
                         .accessToken(accessToken)

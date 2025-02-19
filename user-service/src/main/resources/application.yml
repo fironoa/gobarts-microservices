@@ -5,10 +5,10 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:mysql://localhost:3306/user_db
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: username
-    password: password
+    url: jdbc:postgresql://localhost:5432/user_db
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
     jpa:
       hibernate:
         ddl-auto: none

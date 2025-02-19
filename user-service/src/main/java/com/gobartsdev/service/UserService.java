@@ -7,6 +7,8 @@ import com.gobartsdev.model.entity.RoleEntity;
 import com.gobartsdev.model.entity.UserEntity;
 import com.gobartsdev.repository.RoleRepository;
 import com.gobartsdev.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +21,7 @@ import java.util.Set;
 @Service
 public class UserService {
 
+    private final Logger logger = LogManager.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
@@ -83,7 +86,10 @@ public class UserService {
 
 
     public Collection<UserDto> findAllUser() {
-        return userRepository.findAll()
+        logger.info("Before making db call : " + System.currentTimeMillis());
+        Collection<UserDto> users =userRepository.findAll()
                 .stream().map(UserDto::new).toList();
+        logger.info("After making db call : " + System.currentTimeMillis());
+        return users;
     }
 }
