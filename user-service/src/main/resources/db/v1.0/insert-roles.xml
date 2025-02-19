@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <!-- Executing Raw SQL to Insert Data -->
+    <changeSet id="1" author="yourname">
+        <sql>
+            <![CDATA[
+                INSERT INTO roles (id, name, description) VALUES (1, 'ADMIN', 'admin user');
+                INSERT INTO roles (id, name, description) VALUES (2, 'BUYER', 'buyers');
+                INSERT INTO roles (id, name, description) VALUES (3, 'FISHER', 'fishermen');
+                INSERT INTO roles (id, name, description) VALUES (4, 'USER', 'normal user');
+            ]]>
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
